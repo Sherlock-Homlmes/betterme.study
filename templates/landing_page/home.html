@@ -18,6 +18,7 @@
   <!------------ base-uri ------------------->
   <meta http-equiv="Content-Security-Policy" content="base-uri 'self'">
   <base href="https://betterme.study/">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
   <!----------------open graph------------------------>
   <meta property="og:title" content="Khám phá tri thức">
@@ -30,7 +31,7 @@
 
   <!------------------style------------------------------>
 
-  <link rel="stylesheet" href="{{ url_for('static', path='/css/lib/boostrap/5.1.3.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/libs/boostrap/5.1.3.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', path='/css/landing_page/home.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   
@@ -447,12 +448,12 @@
 <!-- partial -->
   <script  src="{{ url_for('static', path='/js/landing_page/home.js') }}"></script>
 
-  <script src="{{ url_for('static', path='/js/lib/flowbite/1.5.1.js') }}"></script>
-  <script src="{{ url_for('static', path='/js/lib/boostrap/5.1.3.js') }}"></script>
-  <script src="{{ url_for('static', path='/js/lib/jquery/3.6.0.js') }}"></script>
-  <script src="{{ url_for('static', path='/js/lib/jquery-ui/1.11.4.js') }}"></script>
-  <script src="{{ url_for('static', path='/js/lib/sweetalert/2.11.js') }}"></script>
-  <script src="{{ url_for('static', path='/js/lib/raindrop.js') }}"></script>
+  <script src="{{ url_for('static', path='/js/libs/flowbite/1.5.1.js') }}"></script>
+  <script src="{{ url_for('static', path='/js/libs/boostrap/5.1.3.js') }}"></script>
+  <script src="{{ url_for('static', path='/js/libs/jquery/3.6.0.js') }}"></script>
+  <script src="{{ url_for('static', path='/js/libs/jquery-ui/1.11.4.js') }}"></script>
+  <script src="{{ url_for('static', path='/js/libs/sweetalert/2.11.js') }}"></script>
+  <script src="{{ url_for('static', path='/js/libs/raindrop.js') }}"></script>
 
   <script>
     $.ajax({
