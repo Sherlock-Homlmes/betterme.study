@@ -9,8 +9,10 @@ app = FastAPI(docs_url=f"/{docs_url}", redoc_url=None)
 templates = Jinja2Templates(directory="templates")
 TemplateResponse = templates.TemplateResponse
 app.mount("/static", StaticFiles(directory="./static"), name="static")
+origins = ["*"]
 app.add_middleware(
     CORSMiddleware,
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -1,7 +1,9 @@
 from fastapi import Request
 from fastapi.responses import JSONResponse, HTMLResponse
-
 from pydantic import ValidationError
+
+import json
+import io
 
 from base import app, TemplateResponse
 from .models import ContactForm
@@ -38,5 +40,10 @@ async def contact_form(request: Request):
         ContactForm(**data)
     except ValidationError:
         return JSONResponse({'message':'invalid email'}, status_code=400)
+
+
+    email = data['email']
+    with io.open(f'app/landing_page/contact_form_data/{email}.json', 'w', encoding='utf-8') as f1:
+        json.dump(data, f1, ensure_ascii=False, indent=4)
 
     return JSONResponse({'message':'valid'},status_code=200)
