@@ -42,7 +42,7 @@ async def contact_form(request: Request):
         return JSONResponse({'message':'invalid email'}, status_code=400)
 
 
-    email = data['email']
+    email = data['email'].split('@')[0]
     with io.open(f'app/landing_page/contact_form_data/{email}.json', 'w', encoding='utf-8') as f1:
         json.dump(data, f1, ensure_ascii=False, indent=4)
 
