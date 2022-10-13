@@ -1,5 +1,5 @@
 from fastapi import Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
 
 from pydantic import ValidationError
 
@@ -12,10 +12,18 @@ async def test(request: Request) -> TemplateResponse:
     data = {"request": request}
     return TemplateResponse("landing_page/home.html", data)
 
-@app.get("/robot.txt")
+@app.get("/robots.txt")
 async def robot_txt():
 
-    return 0
+    content = '''
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+User-agent: *
+Allow: /
+Crawl-delay: 3 
+</pre>
+    '''
+
+    return HTMLResponse(content)
 
 @app.post("/contact-form")
 async def contact_form(request: Request):
