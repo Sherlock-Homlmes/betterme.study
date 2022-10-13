@@ -9,18 +9,17 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <meta charset="utf-8" />    
   <meta name="keywords" content="kiến thức, khoa học, công nghệ, kiến thức đời sống, tri thức, lịch sử, địa lý, học tập, discord, cộng đồng, community, group, nhóm, swm, study with me, study together, together">
-  <meta name="description" content="Nơi cung cấp, tổng hợp những kiến thức khoa học mới nhất.
-  Những kiến thức đời sống bổ ích, được chọn lọc.">
+  <meta name="description" content="Cộng đồng BetterMe là nơi mọi người có thể cùng nhau học tập, phát triển và tiến bộ. Kết bạn, trao đổi và hơn thế nữa...">
   <meta name="author" content="BetterMe">
   <meta name="generator" content="BetterMe">
 
   <!------------ base-uri ------------------->
-  <meta http-equiv="Content-Security-Policy" content="base-uri 'self'; upgrade-insecure-requests">
+  <!-- <meta http-equiv="Content-Security-Policy" content="base-uri 'self'; upgrade-insecure-requests"> -->
   <base href="https://betterme.study/">
 
   <!----------------open graph------------------------>
   <meta property="og:url" content="https://betterme.study" />
-  <meta property="og:title" content="Khám phá tri thức">
+  <meta property="og:title" content="Cộng đồng BetterMe">
   <meta property="og:type" content="article"/>
 
   <meta property="og:description" content="Cộng đồng BetterMe là nơi mọi người có thể cùng nhau học tập, phát triển và tiến bộ. Kết bạn, trao đổi và hơn thế nữa..." />
@@ -43,7 +42,7 @@
 <body>
 <!-- partial:index.partial.html -->
 <header id="header" class="header" 
-  style="background: url(https://cdn.glitch.global/6fd3f7f0-12bd-4606-b2e7-06869ec1601c/homebg.e52b5cdf24f83bcd55f9f1318855f2ef.png?v=1655368479082);"
+  style="background: url({{ url_for('static', path='/images/header_1.png') }});"
 >
   <a href="" id="page-logo">
     <img src="{{ url_for('static', path='/images/logo2.png') }}" class="logo" alt="Betterme logo" id="header-img" />
