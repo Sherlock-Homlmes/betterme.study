@@ -5,11 +5,12 @@ from pydantic import ValidationError
 
 from base import app, TemplateResponse
 from .models import ContactForm
+from all_env import environ
 
 @app.get("/")
 async def test(request: Request) -> TemplateResponse:
 
-    data = {"request": request}
+    data = {"request": request, "environ": environ}
     return TemplateResponse("landing_page/home.html", data)
 
 @app.get("/robots.txt")

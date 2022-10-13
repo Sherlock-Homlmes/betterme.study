@@ -14,7 +14,9 @@
   <meta name="generator" content="BetterMe">
 
   <!------------ base-uri ------------------->
-  <!-- <meta http-equiv="Content-Security-Policy" content="base-uri 'self'; upgrade-insecure-requests"> -->
+  {% if environ == 'deploy' %}
+  <meta http-equiv="Content-Security-Policy" content="base-uri 'self'; upgrade-insecure-requests">
+  {% endif %}
   <base href="https://betterme.study/">
 
   <!----------------open graph------------------------>
