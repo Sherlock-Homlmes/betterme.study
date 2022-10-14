@@ -1,12 +1,13 @@
-from fastapi import Request
-from fastapi.responses import (
-    HTMLResponse,
-    RedirectResponse, 
-    JSONResponse,
-    FileResponse
-)
-from base import app, TemplateResponse
+from fastapi.responses import FileResponse
+from os.path import exists
+from base import app
 
-@app.get("/exam-cert")
-async def exam_cert():
-    return FileResponse('static/images/betterme-certificate.png')
+@app.get("/certificate/{cert_id}")
+async def certificate(cert_id: int):
+    if cert_id == 0:
+        return FileResponse('static/images/certificate/exam-cert.png')
+
+    path_to_file = f'static/images/certificate/cert-{cert_id}.png'
+    if exists(path_to_file):
+        return FileResponse(path_to_file)
+    return "Invalid certificate id"
