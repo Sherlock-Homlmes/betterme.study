@@ -11,3 +11,5 @@ pymongo
 uvicorn
 aiofiles
 pymongo[srv]
+python-jose[cryptography]
+python-multipart

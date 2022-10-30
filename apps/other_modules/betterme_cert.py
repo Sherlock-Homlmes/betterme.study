@@ -1,8 +1,8 @@
 from fastapi.responses import FileResponse
 from os.path import exists
-from base import app
+from . import router
 
-@app.get("/certificate/{cert_id}")
+@router.get("/certificate/{cert_id}")
 async def certificate(cert_id: int):
     if cert_id == 0:
         return FileResponse('static/images/certificate/exam-cert.png')

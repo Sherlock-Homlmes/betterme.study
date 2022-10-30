@@ -3,19 +3,20 @@ from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 
 import json
-import io, os
+import io
 
-from base import app, TemplateResponse
+from . import router
+from base import TemplateResponse
 from .models import ContactForm
 from all_env import environ
 
-@app.get("/")
+@router.get("/")
 async def test(request: Request) -> TemplateResponse:
 
     data = {"request": request, "environ": environ}
     return TemplateResponse("landing_page/home.html", data)
 
-@app.get("/robots.txt")
+@router.get("/robots.txt")
 async def robot_txt() -> Response:
 
     content = '''User-agent: *
@@ -25,7 +26,7 @@ Crawl-delay: 3
 
     return Response(content=content, media_type='text/plain')
 
-@app.post("/contact-form")
+@router.post("/contact-form")
 async def contact_form(request: Request):
     form = await request.form()
 
