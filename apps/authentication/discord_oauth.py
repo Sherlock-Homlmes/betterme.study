@@ -1,17 +1,19 @@
 # fastapi
 from fastapi import Depends
+
 from fastapi.responses import JSONResponse
 
 #discord
-from fastapi_discord import DiscordOAuthClient, RateLimited, Unauthorized
+from fastapi_discord import User, DiscordOAuthClient, RateLimited, Unauthorized
 from fastapi_discord.exceptions import ClientSessionNotInitialized, InvalidToken
-from fastapi_discord import User
+
 
 #local
 from . import router
 from base.settings import app
 from all_env import CLIENT_ID, CLIENT_SECRET, REDIRECT_URL
 from .models import DiscordUser
+
 
 discord = DiscordOAuthClient(
     CLIENT_ID, CLIENT_SECRET, REDIRECT_URL, 
@@ -29,8 +31,6 @@ async def discord_oauth(code: str):
     token, refresh_token = await discord.get_access_token(code)
     return {"access_token": token, "refresh_token": refresh_token}
 
-
-
 @router.get("/discord_user", dependencies=[Depends(discord.requires_authorization)], response_model=DiscordUser)
 async def get_user(user: User = Depends(discord.user)):
 
@@ -44,7 +44,6 @@ async def get_user(user: User = Depends(discord.user)):
         return JSONResponse(discord_user.__dict__, status_code=200)
 
     return JSONResponse(discord_user.__dict__, status_code=400)
-
 
 
 #exception

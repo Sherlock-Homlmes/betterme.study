@@ -10,6 +10,12 @@ from base import TemplateResponse
 from .models import ContactForm
 from all_env import environ
 
+import asyncio
+async def test_background():
+    for i in range(10):
+        await asyncio.sleep(2)
+        print(i)
+
 @router.get("/")
 async def test(request: Request) -> TemplateResponse:
 
