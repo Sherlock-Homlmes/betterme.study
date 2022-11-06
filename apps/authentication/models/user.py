@@ -1,6 +1,7 @@
-import requests
+from typing import Optional
 
 from pydantic import BaseModel, EmailStr
+import requests
 
 from all_env import bot_api
 
@@ -10,8 +11,8 @@ class DiscordUser(BaseModel):
     email: EmailStr
     name: str 
     avatar_url: str
-    gender: str | None
-    age_range: str | None
+    gender: Optional[str] = None
+    age_range: Optional[str] = None
 
     def register(self):
         pass
