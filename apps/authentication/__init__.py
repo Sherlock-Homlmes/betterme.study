@@ -1,9 +1,10 @@
 from fastapi import APIRouter
 
 router = APIRouter(
-    prefix="/auth",
+    # prefix="/auth",
     tags=["Auth"],
     responses={404: {"description": "Not found"}},
 )
 
 from .discord_oauth import *
+from .jwt_auth import *
