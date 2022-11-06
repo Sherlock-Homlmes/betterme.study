@@ -1,51 +1,60 @@
+# default
+from typing import List
+
 # fastapi
-from fastapi import Request, Depends
+from fastapi import Depends
 from fastapi.responses import JSONResponse
-from pydantic.error_wrappers import ValidationError
 
 #auth
 from apps.authentication import discord, User
 
 #local
 from . import router
-from base import TemplateResponse
+from base.settings import app
 from .models import TodoList
-from database.mongodb import TodoListDB
+from database.mongodb import TodoListDB, TooManyTodo, Todo
 
-@router.api_route(
-    '/todolist', 
-    methods=['GET','PUT','PATCH','DELETE'],
+
+@router.get(
+    '/todolist',
     dependencies=[Depends(discord.requires_authorization)],
-    response_model=None
+    response_model= List[Todo]
 )
-async def todolist(request: Request, user: User = Depends(discord.user)):
-    
-    if request.method == 'GET':
-        return TodoListDB().list_todo(user.id)
+async def todolist(user: User = Depends(discord.user)):
+    todo_list = TodoListDB(user.id).list_todo()
+    return todo_list
 
-    elif request.method == 'PUT':
-        data = await request.json()
-        print(data)
-        try: 
-            todo = TodoList(
-                user_id=user.id, 
-                title=data["title"],
-                description=data["description"],
-                status=data["status"],
-                necessary=data["necessary"],
-                difficult=data["difficult"],
-            )
-        except KeyError as e:
-            return JSONResponse({"error": "Key error", "detail": str(e)}, status_code=400)
-        except ValidationError as e:
-            return JSONResponse({"error": "Validate error", "detail": str(e)}, status_code=400)
 
-        user_todo = TodoListDB().create(todo)
+@router.post(
+    '/todolist',
+    dependencies=[Depends(discord.requires_authorization)],
+    response_model= Todo
+)
+async def todolist(user: User = Depends(discord.user), todo = Depends(TodoList)):
+    todo = TodoListDB(user.id).create(todo)
+    return todo
 
-        return "oke"
 
-    elif request.method == 'PATCH':
-        pass
+@router.put(
+    '/todolist',
+    dependencies=[Depends(discord.requires_authorization)],
+    response_model= Todo
+)
+async def todolist(user: User = Depends(discord.user), todo = Depends(TodoList)):
+    todo = TodoListDB(user.id).update(todo)
+    return todo
 
-    elif request.method == 'DELETE':
-        pass
+
+@router.delete(
+    '/todolist',
+    dependencies=[Depends(discord.requires_authorization)]
+)
+async def todolist(id: int, user: User = Depends(discord.user)):
+    TodoListDB(user.id).delete(id)
+    return JSONResponse({"message": f"success delete todo id {id}"}, status_code=200)
+
+# exception
+@app.exception_handler(TooManyTodo)
+async def client_session_error_handler(_, e: TooManyTodo):
+    print(e)
+    return JSONResponse({"error": "Internal Error"}, status_code=500)
