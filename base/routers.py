@@ -1,11 +1,12 @@
 from .settings import app
-from apps import (
-    authentication, 
+from .exeption_handle import *
+from users import (
     landing_page, 
     study_tools,
     other_modules,
     others,   
 )
+import authentication
 
 app.include_router(authentication.router)
 app.include_router(landing_page.router)

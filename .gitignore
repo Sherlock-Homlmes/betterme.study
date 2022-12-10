@@ -158,3 +158,6 @@ nginx
 docker
 
 tests.py
+store_files/
+store_files/*
+test.py

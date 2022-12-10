@@ -459,22 +459,28 @@
       url: 'https://mie-combine.khoita3.repl.co/server-info',
       contentType: "application/json; charset=utf-8;",
       success: function(response){
-        console.log(response);
-        let totalMember=response.total_member;
-        let totalStudyHour=response.study_hour;
-        let onlineMember=response.online_member;
+        console.log(response)
+        let totalMember=response.total_member
+        let totalStudyHour=response.study_hour
+        let onlineMember=response.online_member
 
-        totalMember /= 1000;
-        totalMember = totalMember.toFixed(1);
-        $('#total-member')[0].innerHTML = `<strong class="counter community-members">${totalMember}</strong><strong>K+</strong>`;
-        $('#study-hour')[0].innerHTML = `<strong class="counter number-of-pages">${totalStudyHour}</strong><strong>M+</strong>`
+        totalMember /= 1000
+        totalMember = totalMember.toFixed(1)
+        $('#total-member')[0].innerHTML = `<strong class="counter community-members">${totalMember}</strong><strong>K+</strong>`
+        $('#study-hour')[0].innerHTML = `<strong class="counter number-of-pages">2</strong><strong>M+</strong>`
         // start counter
-        const counterElements = document.querySelectorAll(".get-started .counter");
-        counterElements.forEach((counterElem) => counterObserver.observe(counterElem));
+        const counterElements = document.querySelectorAll(".get-started .counter")
+        counterElements.forEach((counterElem) => counterObserver.observe(counterElem))
       },
       error: function(error){
         console.log("fail");
+        $('#total-member')[0].innerHTML = `<strong class="counter community-members">10</strong><strong>K+</strong>`
+        $('#study-hour')[0].innerHTML = `<strong class="counter number-of-pages">2</strong><strong>M+</strong>`
+        // start counter
+        const counterElements = document.querySelectorAll(".get-started .counter")
+        counterElements.forEach((counterElem) => counterObserver.observe(counterElem))
       }
+
     })
     
   </script>
