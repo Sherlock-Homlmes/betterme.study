@@ -63,10 +63,15 @@ def register(users: Users):
 
 @router.post('/login')
 def login(users: Users):
-    user = [x for x in users_list if x['email'] == users.email]
-    if (user == []) or (not auth_handler.verify_password(users.password, user['password'])):
+    user = None
+    for x in users_list:
+        if x['email'] == users.email:
+            user = x
+            break
+    # user = [x for x in users_list if x['email'] == users.email][0]
+    if (not auth_handler.verify_password(users.password, user['password'])):
         raise HTTPException(status_code=401, detail='Invalid email and/or password')
-    user = user[0]
+
     token = auth_handler.encode_token(user['email'])
     return { 'token': token }
 
