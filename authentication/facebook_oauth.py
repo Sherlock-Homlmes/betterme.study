@@ -41,6 +41,7 @@ class FaceBookOauth2:
 @router.get("/facebook-oauth")
 async def discord_oauth(request: Request):
     authorization_response = str(request.url)
-    if "https" not in authorization_response: authorization_response.replace('http', 'https')
+    if "https" not in authorization_response:
+        authorization_response = authorization_response.replace('http', 'https')
     user = FaceBookOauth2().get_user_info(authorization_response)
     return JSONResponse(user, status_code=200)

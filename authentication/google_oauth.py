@@ -46,6 +46,7 @@ class GoogleOauth2:
 @router.get("/google-oauth")
 async def discord_oauth(request: Request):
     authorization_response = str(request.url)
-    if "https" not in authorization_response: authorization_response.replace('http', 'https')
-    user = GoogleOauth2().get_user_info(authorization_response)
+    if "https" not in authorization_response:
+        authorization_response = authorization_response.replace('http', 'https')
+        user = GoogleOauth2().get_user_info(authorization_response)
     return JSONResponse(user, status_code=200)
