@@ -1,5 +1,5 @@
 #  fastapi
-from fastapi import HTTPException, Security, Depends
+from fastapi import HTTPException, Security
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 # default
@@ -7,9 +7,6 @@ import jwt
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 
-# local
-from . import router
-from .schemas import Users
 
 class AuthHandler():
     security = HTTPBearer()
@@ -46,35 +43,3 @@ class AuthHandler():
     def auth_wrapper(self, auth: HTTPAuthorizationCredentials = Security(security)):
         return self.decode_token(auth.credentials)
 
-auth_handler = AuthHandler()
-users_list = []
-
-@router.post('/register', status_code=201)
-def register(users: Users):
-    if any(x['email'] == users.email for x in users_list):
-        raise HTTPException(status_code=400, detail='email is taken')
-    hashed_password = auth_handler.get_password_hash(users.password)
-    users_list.append({
-        'email': users.email,
-        'password': hashed_password    
-    })
-    return users_list
-
-
-@router.post('/login')
-def login(users: Users):
-    user = None
-    for x in users_list:
-        if x['email'] == users.email:
-            user = x
-            break
-    # user = [x for x in users_list if x['email'] == users.email][0]
-    if (not auth_handler.verify_password(users.password, user['password'])):
-        raise HTTPException(status_code=401, detail='Invalid email and/or password')
-
-    token = auth_handler.encode_token(user['email'])
-    return { 'token': token }
-
-@router.get('/auth/self', dependencies=[Depends(auth_handler.auth_wrapper)])
-def protected(user: Users = Depends(auth_handler.auth_wrapper)):
-    return user

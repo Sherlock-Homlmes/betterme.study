@@ -1,19 +1,17 @@
 # fastapi
 from fastapi import Depends
 
-from fastapi.responses import JSONResponse
-
 #discord
 from fastapi_discord import User, DiscordOAuthClient
 
 #local
 from . import router
 from base.settings import app
-from all_env import CLIENT_ID, CLIENT_SECRET, REDIRECT_URL
+from all_env import DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, DISCORD_REDIRECT_URL
 
 
 discord = DiscordOAuthClient(
-    CLIENT_ID, CLIENT_SECRET, REDIRECT_URL, 
+    DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, DISCORD_REDIRECT_URL, 
     ("identify", "guilds", "email")
 )  # scopes
 
@@ -23,7 +21,7 @@ async def on_startup():
     await discord.init()
 
 
-@router.get("/discord-oauth/{code}")
+@router.get("/discord-oauth")
 async def discord_oauth(code: str):
     token, refresh_token = await discord.get_access_token(code)
     return {"access_token": token, "refresh_token": refresh_token}

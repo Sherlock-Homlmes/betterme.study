@@ -6,5 +6,7 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
+from .auth import *
 from .discord_oauth import *
-from .jwt_auth import *
+from .facebook_oauth import*
+from  .google_oauth import *
