@@ -11,7 +11,7 @@ from . import router
 from .schemas import Users, UsersInfo
 from .jwt_auth import AuthHandler
 from other_modules.time_modules import time_to_str
-from all_env import DISCORD_OAUTH_URL
+from .discord_oauth import discord
 from .google_oauth import GoogleOauth2
 from .facebook_oauth import FaceBookOauth2
 
@@ -71,13 +71,13 @@ def protected(user: Users = Depends(auth_handler.auth_wrapper)):
 
 @router.get('/oauth-link')
 async def get_oauth_link(
-    discord_link: bool,
-    google_link: bool,
-    facebook_link: bool
+    discord_link: Optional[bool] = False,
+    google_link: Optional[bool] = False,
+    facebook_link: Optional[bool] = False,
 ):
     response = {}
     if discord_link:
-        response['discord_link'] = DISCORD_OAUTH_URL
+        response['discord_link'] = discord.get_oauth_login_url()
     if google_link:
         response['google_link'] = GoogleOauth2().get_oauth_url()
     if facebook_link:

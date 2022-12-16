@@ -6,6 +6,9 @@ load_dotenv()
 # environ
 environ = os.getenv("environ")
 
+# self url
+self_url = os.getenv("self_url")
+
 # fastapi
 docs_url = os.getenv("docs_url")
 
@@ -19,7 +22,7 @@ IMGBB_API_KEY = os.environ.get('IMGBB_API_KEY')
 DISCORD_CLIENT_ID = os.environ.get('DISCORD_CLIENT_ID')
 DISCORD_CLIENT_SECRET = os.environ.get('DISCORD_CLIENT_SECRET')
 DISCORD_REDIRECT_URL = os.environ.get('DISCORD_REDIRECT_URL')
-DISCORD_OAUTH_URL = os.environ.get('DISCORD_OAUTH_URL')
+# DISCORD_OAUTH_URL = os.environ.get('DISCORD_OAUTH_URL')
 
 
 # google oauth

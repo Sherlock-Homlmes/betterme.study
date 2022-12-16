@@ -4,9 +4,11 @@ from fastapi import Depends
 #discord
 from fastapi_discord import User, DiscordOAuthClient
 
+# default
+import aiohttp
 #local
 from . import router
-from base.settings import app
+from all_env import self_url
 from all_env import DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, DISCORD_REDIRECT_URL
 
 
@@ -24,8 +26,13 @@ async def on_startup():
 @router.get("/discord-oauth")
 async def discord_oauth(code: str):
     token, refresh_token = await discord.get_access_token(code)
-    return {"access_token": token, "refresh_token": refresh_token}
+    headersList = {
+        'Authorization': f'Bearer {token}'
+    }
+    async with aiohttp.ClientSession() as session:
+        res = await session.get(url=f'{self_url}/auth/discord/user/self', headers=headersList)
+    return await res.json()
 
-@router.get("/discord_user/self", dependencies=[Depends(discord.requires_authorization)], response_model=User)
+@router.get("/discord/user/self", dependencies=[Depends(discord.requires_authorization)], response_model=User)
 async def get_user(user: User = Depends(discord.user)):
     return user
