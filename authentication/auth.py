@@ -14,6 +14,7 @@ from other_modules.time_modules import time_to_str
 from .discord_oauth import discord
 from .google_oauth import GoogleOauth2
 from .facebook_oauth import FaceBookOauth2
+from all_env import DISCORD_OAUTH_URL
 
 auth_handler = AuthHandler()
 users_list = []
@@ -77,7 +78,8 @@ async def get_oauth_link(
 ):
     response = {}
     if discord_link:
-        response['discord_link'] = discord.get_oauth_login_url()
+        # response['discord_link'] = discord.get_oauth_login_url()
+        response['discord_link'] = DISCORD_OAUTH_URL
     if google_link:
         response['google_link'] = GoogleOauth2().get_oauth_url()
     if facebook_link:
