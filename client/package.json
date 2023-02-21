@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "next dev -p 5173",
     "build": "next build",
-    "start": "next start -p 4173",
-    "prepare": "husky install"
+    "start": "next start -p 4173"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.5",
@@ -21,8 +20,6 @@
     "usehooks-ts": "^2.9.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.3.0",
-    "@commitlint/config-conventional": "^17.3.0",
     "@next/font": "^13.1.6",
     "@types/node": "^18.11.13",
     "@types/react": "^18.0.26",
@@ -39,8 +36,6 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "husky": "^8.0.2",
-    "lint-staged": "^13.1.0",
     "postcss": "^8.4.20",
     "prettier": "^2.8.1",
     "prettier-plugin-tailwindcss": "^0.2.1",
@@ -48,12 +43,7 @@
     "typescript": "^4.9.3"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{html,css,scss,json}": [
-      "prettier --write"
-    ]
+    "*.{js,jsx,ts,tsx}": "eslint --fix",
+    "*.{js,cjs,jsx,ts,tsx,json,md,html,css}": "prettier --write"
   }
 }

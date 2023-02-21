@@ -26,7 +26,8 @@
     "next.config.js",
     "next-env.d.ts",
     "tailwind.config.cjs",
-    "postcss.config.cjs"
+    "postcss.config.cjs",
+    ".eslintrc.js"
   ],
   "exclude": ["node_modules"]
 }
