@@ -6,24 +6,13 @@ import { Meta } from '@/components';
 import googleIcon from 'public/images/icons/google.svg';
 import facebookIcon from 'public/images/icons/facebook.svg';
 import discordIcon from 'public/images/icons/discord.svg';
+import type { GetServerSideProps } from 'next';
 
-const socialLinks: Array<{
-  icon: string;
-  alt: string;
-}> = [
-  {
-    icon: googleIcon,
-    alt: 'google logo',
-  },
-  {
-    icon: facebookIcon,
-    alt: 'facebook logo',
-  },
-  {
-    icon: discordIcon,
-    alt: 'discord logo',
-  },
-];
+interface AuthUrls {
+  googleUrl: string;
+  facebookUrl: string;
+  discordUrl: string;
+}
 
 interface FormData {
   email: string;
@@ -42,7 +31,29 @@ interface Input {
   }>;
 }
 
-const SignIn = () => {
+const SignIn = ({ googleUrl, facebookUrl, discordUrl }: AuthUrls) => {
+  const socialLinks: Array<{
+    icon: string;
+    alt: string;
+    url: string;
+  }> = [
+    {
+      icon: googleIcon,
+      alt: 'google logo',
+      url: googleUrl,
+    },
+    {
+      icon: facebookIcon,
+      alt: 'facebook logo',
+      url: facebookUrl,
+    },
+    {
+      icon: discordIcon,
+      alt: 'discord logo',
+      url: discordUrl,
+    },
+  ];
+
   const {
     register,
     formState: { errors, isSubmitSuccessful },
@@ -125,14 +136,14 @@ const SignIn = () => {
                 Sign in with Social Media
               </h2>
               <div className='mt-4 flex items-center justify-center gap-4'>
-                {socialLinks.map(({ icon, alt }) => (
-                  <button
-                    key={alt}
-                    type='button'
+                {socialLinks.map(({ icon, alt, url }) => (
+                  <Link
+                    key={url}
+                    href={url}
                     className='rounded-2xl border p-3 outline-none transition-shadow hover:border-yellow-500 hover:shadow-lg focus:outline-yellow-500'
                   >
                     <Image src={icon} alt={alt} className='h-7 w-7' />
-                  </button>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -198,4 +209,25 @@ const SignIn = () => {
   );
 };
 
+const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const response = await fetch(
+    'https://betterme.study/auth/oauth-link?discord_link=true&google_link=true&facebook_link=true',
+  );
+  const data = await response.json();
+
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=10, stale-while-revalidate=59',
+  );
+
+  return {
+    props: {
+      googleUrl: data.google_link,
+      facebookUrl: data.facebook_link,
+      discordUrl: data.discord_link,
+    } as AuthUrls,
+  };
+};
+
+export { getServerSideProps };
 export default SignIn;
