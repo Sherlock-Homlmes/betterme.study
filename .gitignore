@@ -1,3 +1,4 @@
+# ---------- Server ----------
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -162,30 +163,21 @@ store_files/
 store_files/*
 test.py
 
-
-
-
-
-
-
-
-
-
-
+# ---------- Client ----------
 # dependencies
-/node_modules
-/.pnp
+node_modules
+.pnp
 .pnp.js
 
 # testing
-/coverage
+coverage
 
 # next.js
-/.next/
-/out/
+.next/
+out/
 
 # production
-/build
+build
 
 # misc
 .DS_Store
