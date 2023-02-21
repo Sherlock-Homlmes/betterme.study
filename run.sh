@@ -47,7 +47,7 @@ elif [[ ${args[0]} == "install" ]]; then
     if [[ ${args[1]} == "docker" ]]; then
         echo "Installing Docker Desktop. Please wait..."
 
-        echo "Step 1/3: Installing neccesary tools"
+        echo "Step 1/4: Installing neccesary tools"
         echo $(eval "sudo apt-get update 
             ${linebreak}sudo apt-get install \
             ca-certificates \
@@ -56,7 +56,7 @@ elif [[ ${args[0]} == "install" ]]; then
             lsb-release -y 
         ")
 
-        echo "Step 2/3: Setting up Docker's package repository"
+        echo "Step 2/4: Setting up Docker's package repository"
         ubuntu_codename=$( \
            (grep DISTRIB_CODENAME /etc/upstream-release/lsb-release || \
             grep DISTRIB_CODENAME /etc/lsb-release) 2>/dev/null | \
@@ -68,9 +68,17 @@ elif [[ ${args[0]} == "install" ]]; then
                 $ubuntu_codename stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
         ")
 
-        echo "Step 3/3: Installing Docker Engine"
+        echo "Step 3/4: Installing Docker Engine"
         echo $(eval "sudo apt-get update
             ${linebreak}sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+        ")
+
+        echo "Step 4/4: Adding $USER to docker group"
+        if ! [ $(getent group docker) ]; then
+          echo $(eval "sudo groupadd docker")
+        fi
+        echo $(eval "sudo usermod -aG docker $USER
+            ${linebreak}newgrp docker
         ")
 
         output="Docker Desktop successfully installed"
