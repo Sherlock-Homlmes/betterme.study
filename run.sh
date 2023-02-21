@@ -45,21 +45,35 @@ elif [[ ${args[0]} == "down" ]]; then
 ### This is for install tools
 elif [[ ${args[0]} == "install" ]]; then
     if [[ ${args[1]} == "docker" ]]; then
+        echo "Installing Docker Desktop. Please wait..."
+
+        echo "Step 1/3: Installing neccesary tools"
         echo $(eval "sudo apt-get update 
             ${linebreak}sudo apt-get install \
             ca-certificates \
             curl \
             gnupg \
-            lsb-release 
-            ${linebreak}sudo mkdir -p /etc/apt/keyrings
+            lsb-release -y 
+        ")
+
+        echo "Step 2/3: Setting up Docker's package repository"
+        ubuntu_codename=$( \
+           (grep DISTRIB_CODENAME /etc/upstream-release/lsb-release || \
+            grep DISTRIB_CODENAME /etc/lsb-release) 2>/dev/null | \
+           cut -d'=' -f2 )
+        echo $(eval "sudo mkdir -p /etc/apt/keyrings
             ${linebreak}curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
             ${linebreak}echo \
                 "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-                $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-            ${linebreak}sudo apt-get update
-            ${linebreak}sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+                $ubuntu_codename stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
         ")
-        output="Install docker success"
+
+        echo "Step 3/3: Installing Docker Engine"
+        echo $(eval "sudo apt-get update
+            ${linebreak}sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+        ")
+
+        output="Docker Desktop successfully installed"
         color="$green"
     # elif [[ ${args[1]} == "python" ]]; then
     # elif [[ ${args[1]} == "npm" ]]; then
