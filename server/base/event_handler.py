@@ -14,4 +14,4 @@ async def startup():
         document_models=[Users, UserSettings, TodoList, TaskCategories, Pomodoros],
     )
 
-    print("start up done")
+    print("Start up done")
