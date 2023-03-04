@@ -7,6 +7,7 @@ import googleIcon from 'public/images/icons/google.svg';
 import facebookIcon from 'public/images/icons/facebook.svg';
 import discordIcon from 'public/images/icons/discord.svg';
 import type { GetServerSideProps } from 'next';
+import fetchLink from '@/config';
 
 interface AuthUrls {
   googleUrl: string;
@@ -211,7 +212,7 @@ const SignIn = ({ googleUrl, facebookUrl, discordUrl }: AuthUrls) => {
 
 const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const response = await fetch(
-    'https://betterme.study/auth/oauth-link?discord_link=true&google_link=true&facebook_link=true',
+    `${fetchLink}/auth/oauth-link?discord_link=true&google_link=true&facebook_link=true`,
   );
   const data = await response.json();
 
