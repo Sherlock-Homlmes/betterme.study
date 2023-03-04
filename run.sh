@@ -21,29 +21,8 @@ endcolor="\e[0m"
 
 args=("$@")
 
-### This is for all project
-if [[ ${args[0]} == "up" ]]; then
-    echo "Starting docker..."
-    # output=$(eval "docker compose up -d")
-    # echo "$output"
-    eval "cd server"
-    output=$(eval "docker compose up -d")
-    echo "$output"
-    eval "cd ..${linebreak}cd client"
-    output=$(eval "docker compose up -d")
-
-elif [[ ${args[0]} == "down" ]]; then
-    echo "Stopping docker..."
-    # output=$(eval "docker compose down")
-    # echo "$output"
-    eval "cd server"
-    output=$(eval "docker compose down")
-    echo "$output"
-    eval "cd ..${linebreak}cd client"
-    output=$(eval "docker compose down")
-
 ### This is for install tools
-elif [[ ${args[0]} == "install" ]]; then
+if [[ ${args[0]} == "install" ]]; then
     if [[ ${args[1]} == "docker" ]]; then
         echo "Installing Docker Desktop. Please wait..."
 
