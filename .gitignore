@@ -152,12 +152,6 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-letsencrypt
-data
-data.ms
-nginx
-docker
-
 tests.py
 store_files/
 store_files/*
