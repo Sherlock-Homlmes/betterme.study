@@ -1,29 +1,33 @@
+import API_URL from '@/config';
 import { useRouter } from 'next/router';
-import fetchLink from '@/config';
+import { useEffect } from 'react';
 
 const Auth = () => {
-  // get auth url from router
   const router = useRouter();
   const { query } = useRouter();
-  let apiAuthLink = fetchLink;
+  let authApiUrl = API_URL;
 
-  //
   if (
-    ['discord-oauth', 'google-oauth', 'facebook-oauth'].includes(query.authType)
+    ['discord-oauth', 'google-oauth', 'facebook-oauth'].includes(
+      query.authType as string,
+    )
   ) {
-    apiAuthLink += `/auth/${query.authType}?`;
+    authApiUrl += `/auth/${query.authType}?`;
   }
 
-  // get JWT token
-  fetch(apiAuthLink + new URLSearchParams(query))
-    .then((res) => res.json())
-    .then((data) => {
+  useEffect(() => {
+    const getAndPersistToken = async () => {
+      const res = await fetch(authApiUrl + new URLSearchParams(query as any));
+      const data = await res.json();
       if (typeof window !== 'undefined' && data.token) {
         window.localStorage.setItem('Authorization', `Bearer ${data.token}`);
         router.replace(`/dashboard`);
       }
-    });
+    };
 
-  return <p>abc</p>;
+    getAndPersistToken();
+  });
+
+  return null;
 };
 export default Auth;
