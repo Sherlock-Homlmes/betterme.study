@@ -8,6 +8,7 @@ import facebookIcon from 'public/images/icons/facebook.svg';
 import discordIcon from 'public/images/icons/discord.svg';
 import type { GetServerSideProps } from 'next';
 import API_URL from '@/config';
+import { useRouter } from 'next/router';
 
 interface AuthUrls {
   googleUrl: string;
@@ -62,6 +63,8 @@ const SignIn = ({ googleUrl, facebookUrl, discordUrl }: AuthUrls) => {
     reset,
   } = useForm<FormData>();
 
+  const router = useRouter();
+
   const inputs: Input[] = [
     {
       label: 'Your email',
@@ -108,7 +111,25 @@ const SignIn = ({ googleUrl, facebookUrl, discordUrl }: AuthUrls) => {
     },
   ];
 
-  const onSubmit = (data: FormData) => console.log(data);
+  const onSubmit = (formData: FormData) => {
+    const getAndPersistToken = async () => {
+      const res = await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (typeof window !== 'undefined' && data.token) {
+        window.localStorage.setItem('Authorization', `Bearer ${data.token}`);
+        router.replace(`/dashboard`);
+      }
+    };
+
+    getAndPersistToken();
+  };
 
   useEffect(() => {
     if (isSubmitSuccessful) {

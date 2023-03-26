@@ -1,14 +1,13 @@
 # fastapi
 from fastapi import HTTPException, Depends
 from fastapi.responses import JSONResponse
-from pydantic import EmailStr
 
 # default
 from typing import Optional
 
 # local
 from . import router
-from .schemas import User
+from .schemas import RegisterUser, RegisterUserResponse, LoginUser, LoginUserResponse
 from .jwt_auth import auth_handler
 from .google_oauth import GoogleOauth2
 from .facebook_oauth import FaceBookOauth2
@@ -19,9 +18,9 @@ from other_modules.json_modules import mongodb_to_json
 from all_env import DISCORD_OAUTH_URL
 
 
-@router.post("/register", status_code=201)
-async def register(user: User):
-
+@router.post("/register", status_code=201, response_model=RegisterUserResponse)
+async def register(user: RegisterUser):
+    print(user)
     user_exist = await Users.find_one(Users.email == user.email)
     if user_exist:
         raise HTTPException(status_code=400, detail="email is taken")
@@ -37,16 +36,16 @@ async def register(user: User):
     return JSONResponse(status_code=201, content=mongodb_to_json(user.get_info()))
 
 
-@router.post("/login")
+@router.post("/login", response_model=LoginUserResponse)
 async def login(
-    email: Optional[EmailStr] = None,
-    password: Optional[str] = None,
+    user: LoginUser
 ):
+
     # authorize and get JWT token
-    user = await Users.find_one(Users.email == email)
+    user = await Users.find_one(Users.email == user.email)
     if not user:
         raise HTTPException(status_code=404, detail="User not exist")
-    elif not auth_handler.verify_password(password, user.password):
+    elif not auth_handler.verify_password(user.password, user.password):
         raise HTTPException(status_code=401, detail="Invalid email and/or password")
 
     user.last_logged_in_at = vn_now()
