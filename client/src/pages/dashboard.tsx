@@ -1,6 +1,8 @@
 import { Layout } from '@/components';
 import API_URL from '@/config';
+import isSignedIn from '@/helpers/auth';
 import fetchWithAuth from '@/helpers/betterFetch';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 interface UserInfo {
@@ -15,20 +17,27 @@ const Dashboard = () => {
     avatar: '',
     name: '',
   });
+  const router = useRouter();
 
   useEffect(() => {
+    if (!isSignedIn()) {
+      router.push('/sign-in');
+      return;
+    }
+
     const fetchUserInfo = async () => {
-      const res = await fetchWithAuth(`${API_URL}/auth/self`);
-      const data = await res.json();
-      setUser({
-        id: data.id,
-        avatar: data.avatar,
-        name: data.name,
-      } as UserInfo);
+      try {
+        const res = await fetchWithAuth(`${API_URL}/auth/self`);
+        const { id, avatar, name } = await res.json();
+        setUser({ id, avatar, name });
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      }
     };
 
     fetchUserInfo();
-  }, []);
+  }, [router]);
 
   return (
     <Layout>
