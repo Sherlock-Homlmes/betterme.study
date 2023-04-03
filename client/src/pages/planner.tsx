@@ -333,14 +333,14 @@ const Planner = () => {
                     <Meeting key={meeting.id} meeting={meeting} />
                   ))
                 ) : (
-                  <p>No meetings for today</p>
+                  <p>No tasks for today</p>
                 )}
               </ol>
               <button
                 type='button'
                 className='mx-auto mt-4 flex items-center gap-4 rounded-xl bg-slate-500 px-4 py-2 text-white'
               >
-                Create meeting
+                Create task
                 <PlusIcon className='h-4 w-4' />
               </button>
             </section>

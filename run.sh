@@ -1,6 +1,6 @@
 #! /bin/bash
 
-##### SETUP
+### SETUP
 linebreak=$'\n'
 red="\e[31m"
 green="\e[32m"
@@ -17,12 +17,18 @@ endcolor="\e[0m"
 # docker_alias = []
 # docker_command = []
 
-##### INPUT
+### INPUT
 
 args=("$@")
 
+
+### This is for setup project
+if [[ ${args[0]} == "setup" ]]; then
+    echo $(eval "yarn install")
+    echo $(eval "docker compose build")
+
 ### This is for install tools
-if [[ ${args[0]} == "install" ]]; then
+elif [[ ${args[0]} == "install" ]]; then
     if [[ ${args[1]} == "docker" ]]; then
         echo "Installing Docker Desktop. Please wait..."
 
