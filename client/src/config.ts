@@ -1,4 +1,8 @@
-const { ENVIRONMENT } = process.env;
-const API_URL =
-  ENVIRONMENT === 'docker' ? 'http://nginx/api' : 'http://localhost:8080/api';
-export default API_URL;
+const {ENVIRON} = process.env;
+const fetchLink =
+  ENVIRON === 'docker'
+  ? 'http://server:8080/api'
+  : ENVIRON === 'production'
+  ? process.env.BASE_URL
+  : 'http://localhost:8080/api';
+export default fetchLink;
