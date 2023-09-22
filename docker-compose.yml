@@ -24,8 +24,10 @@ services:
       - ./client:/client
     networks:
       - app-network
+    environment:
+      - ENVIRONMENT=docker
     command: >
-      sh -c " cd /client && yarn install && yarn dev"
+      sh -c "cd /client && yarn install && yarn dev"
 
   server:
     build:
